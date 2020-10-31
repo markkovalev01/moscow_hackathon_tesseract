@@ -64,6 +64,9 @@ public class FileUtils {
                 }
             });
         }
+        else {
+            res.add(Arrays.asList(file.getPath()));
+        }
         return res;
     }
 }
