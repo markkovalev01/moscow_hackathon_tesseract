@@ -21,9 +21,12 @@ public class FileUtils {
     public static List<BufferedImage> fileToBuffImg(String filePath) {
         if (FilenameUtils.getExtension(filePath.toLowerCase()).equals("pdf")) {
             return pdfToBuffImg(filePath);
-        } else {
-            return imgToBuffImg(filePath);
         }
+        if(FilenameUtils.getExtension(filePath.toLowerCase()).equals("json")){
+            return null;
+        }
+            return imgToBuffImg(filePath);
+
     }
 
     @SneakyThrows
@@ -41,7 +44,9 @@ public class FileUtils {
         for (int page = 0; page < document.getNumberOfPages(); ++page) {
             BufferedImage bim = pdfRenderer.renderImageWithDPI(
                     page, 300, ImageType.RGB);
+
             res.add(bim);
+//            System.out.println(res.size());
         }
         document.close();
         return res;
@@ -64,9 +69,9 @@ public class FileUtils {
                 }
             });
         }
-        else {
-            res.add(Arrays.asList(file.getPath()));
-        }
+//        else {
+//            res.add(Arrays.asList(file.getPath()));
+//        }
         return res;
     }
 }

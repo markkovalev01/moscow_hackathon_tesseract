@@ -23,15 +23,19 @@ public class App {
         tesseract.setLanguage("rus");
         tesseract.setPageSegMode(1);
         tesseract.setOcrEngineMode(1);
-        Pattern spacePattern = Pattern.compile("[\\s\\n]+");
+
         FileUtils.getFiles("Dataset/Разр. на ввод").forEach(dir -> {
             dir.forEach(file -> {
                 List<BufferedImage> bufferedImageList = FileUtils.fileToBuffImg(file);
+                if(bufferedImageList==null){
+                    return;
+                }
                 HashMap<String, String> pages = new HashMap<>();
                 bufferedImageList.forEach(bi -> {
                     try {
                         long startTime = System.nanoTime();
                         String result = tesseract.doOCR(bi);
+                        Pattern spacePattern = Pattern.compile("[\\s\\n]+");
                         Matcher spaceMatcher = spacePattern.matcher(result);
                         String newS = spaceMatcher.replaceAll(" ");
                         long endTime = System.nanoTime();
@@ -43,7 +47,6 @@ public class App {
                         ObjectMapper mapper = new ObjectMapper();
                         try {
                             mapper.writeValue(new File(FilenameUtils.removeExtension(file) + ".json"), pages);
-
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
