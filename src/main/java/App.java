@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,13 +25,13 @@ public class App {
         tesseract.setPageSegMode(1);
         tesseract.setOcrEngineMode(1);
 
-        FileUtils.getFiles("Dataset/Разр. на ввод").forEach(dir -> {
+        FileUtils.getFiles("Dataset/БТИ").forEach(dir -> {
             dir.forEach(file -> {
                 List<BufferedImage> bufferedImageList = FileUtils.fileToBuffImg(file);
                 if(bufferedImageList==null){
                     return;
                 }
-                HashMap<String, String> pages = new HashMap<>();
+                HashMap<String, String> pages = new LinkedHashMap<>();
                 bufferedImageList.forEach(bi -> {
                     try {
                         long startTime = System.nanoTime();
@@ -53,14 +54,9 @@ public class App {
                     } catch (TesseractException e) {
                         e.printStackTrace();
                     }
-
                 });
             });
         });
-
-
-//
-//
 
 
     }
